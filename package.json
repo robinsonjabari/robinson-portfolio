@@ -1,0 +1,53 @@
+{
+  "name": "portfolio",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "dev": "next dev --turbopack",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "update-resume": "powershell -Command \"Copy-Item -LiteralPath 'C:\\Users\\jahro\\OneDrive\\Documents\\Job Docs\\Robinson Resume.pdf' -Destination './public/resume.pdf' -Force\"",
+    "backend:dev": "nodemon --watch portfolio/src --exec \"node --loader ts-node/esm ./portfolio/src/index.ts\"",
+    "backend:build": "tsc",
+    "backend:start": "node dist/index.js",
+    "prisma:migrate": "prisma migrate dev",
+    "prisma:studio": "prisma studio"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@prisma/client": "^6.15.0",
+    "@radix-ui/react-slot": "^1.2.0",
+    "bcrypt": "^6.0.0",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.2",
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "lucide-react": "^0.487.0",
+    "next": "^15.5.4",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "tailwind-merge": "^3.2.0",
+    "tw-animate-css": "^1.2.5"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3",
+    "@tailwindcss/postcss": "^4",
+    "@types/express": "^5.0.3",
+    "@types/node": "^24.3.1",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "15.2.4",
+    "nodemon": "^3.1.10",
+    "prisma": "^6.15.0",
+    "tailwindcss": "^4",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.2"
+  }
+}
