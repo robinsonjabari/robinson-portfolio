@@ -19,8 +19,7 @@ type Repo = {
 }
 
 export default function Projects() {
-  // ⚙️ CONFIGURATION: List the exact repository names you want to display
-  // Add or remove repository names from this array
+  // Add or remove repository names
   const selectedRepos = [
     "your-repo-name-1",
     "your-repo-name-2",
@@ -82,7 +81,7 @@ export default function Projects() {
       mounted = false
       controller.abort()
     }
-  }, [])
+  }, [selectedRepos])
 
   return (
     <section className='my-16'>
