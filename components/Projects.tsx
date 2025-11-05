@@ -20,27 +20,41 @@ type Repo = {
 
 export default function Projects() {
   // Add or remove repository names
-  const selectedRepos = [
-    "your-repo-name-1",
-    "your-repo-name-2",
-    "your-repo-name-3",
-    // Add more repository names here
-  ]
+  const selectedRepos = React.useMemo(
+    () => ["UNCP-Navigate", "your-repo-name-2", "your-repo-name-3"],
+    []
+  )
 
-  // Optional: Customize display names and descriptions for specific repos
-  const overrides: Record<string, { title?: string; description?: string }> = {
-    // Example:
-    // "my-repo-name": {
-    //   title: "My Awesome Project",
-    //   description: "A custom description that's better than the GitHub one"
-    // },
-  }
+  //Customize display names and descriptions for specific repos
+  // Example:
+  // "my-repo-name": {
+  //   title: "My Awesome Project",
+  //   description: "A custom description that's better than the GitHub one",
+  //   status: "complete" // or "ongoing"
+  // },
+  const overrides: Record<
+    string,
+    { title?: string; description?: string; status?: "complete" | "ongoing" }
+  > = React.useMemo(
+    () => ({
+      "UNCP-Navigate": {
+        title: "UNCP Navigate",
+        description:
+          "A web application to help University of North Carolina Pembroke students and faculty navigate campus.",
+        status: "ongoing",
+      },
+    }),
+    []
+  )
 
   const [repos, setRepos] = React.useState<Repo[] | null>(null)
   const [loading, setLoading] = React.useState(false)
   const [error, setError] = React.useState<string | null>(null)
+  const hasFetchedRef = React.useRef(false)
 
   React.useEffect(() => {
+    if (hasFetchedRef.current) return
+    hasFetchedRef.current = true
     let mounted = true
     const controller = new AbortController()
 
@@ -97,25 +111,34 @@ export default function Projects() {
           const ov = overrides[repo.name]
           const title = ov?.title ?? repo.name
           const description = ov?.description ?? repo.description
+          const status = ov?.status
           return (
-            <Card key={repo.id} className='h-full'>
+            <Card key={repo.id} className='h-full flex flex-col'>
               <CardHeader>
-                <CardTitle>{title}</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <CardDescription>
-                  {description ?? "No description provided."}
-                </CardDescription>
-                {repo.language && (
-                  <div className='mt-2 text-xs text-muted-foreground'>
-                    {repo.language}
-                  </div>
-                )}
-              </CardContent>
-              <CardFooter className='mt-auto justify-between items-center'>
-                <div className='text-sm text-muted-foreground'>
-                  ⭐ {repo.stargazers_count}
+                <div className='flex items-center gap-2'>
+                  <CardTitle>{title}</CardTitle>
+                  {status && (
+                    <span
+                      className={`text-xs px-2 py-1 rounded-full font-medium ${
+                        status === "complete"
+                          ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400"
+                          : "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400"
+                      }`}
+                    >
+                      {status === "complete" ? "✓ Complete" : "⚡ Ongoing"}
+                    </span>
+                  )}
                 </div>
+              </CardHeader>
+              <CardContent className='flex-1 space-y-4'>
+                <div>
+                  <p className='text-sm font-semibold mb-2'>Description:</p>
+                  <CardDescription>
+                    {description ?? "No description provided."}
+                  </CardDescription>
+                </div>
+              </CardContent>
+              <CardFooter className='mt-auto justify-end items-center'>
                 <Button variant='outline' size='sm' asChild>
                   <a
                     href={repo.html_url}
